@@ -3,13 +3,11 @@
 var wordlRow = Vue.component('wordl-row', {
   data: function () {
     return {
-    	word: this.$parent.word
-    	,
     	letters:[]
     }
   }
   ,
-  template: "<div class='wordl_row'><span v-for='letter in letters' class='letter'>{{letter}}</span></div>"
+  template: "<div class='wordl_row'><span v-for='letter in letters' :class='letter.c'>{{letter.l}}</span></div>"
 })
 
 var wordlBoard = Vue.component('wordl-board', {
@@ -27,7 +25,7 @@ var wordlBoard = Vue.component('wordl-board', {
 			,
 			wordlength: this.init_wordlength
 			,
-			word: this.init_word.split()
+			word: this.init_word.toUpperCase().split("")
 			,
 			rows: ris
 		}
@@ -81,11 +79,29 @@ function evaluateGuess() {
 
 }
 
-function handleKeyEntry(c) {
+function handleKeyEntry(l) {
 	var wboard = WORDL.$children[0];
 	var wrow = wboard.$children[wboard._data.activeRow];
 	if (wrow.letters.length < wboard._data.wordlength) {
-		Vue.set(wrow.letters, wrow.letters.length, c);
+		var c = "normal";
+		console.log("------------------");
+		console.log(l);
+		console.log(wrow._data.letters.length);
+		console.log(wboard._data.word);
+		c = "letter";
+		if (l==wboard._data.word[wrow._data.letters.length]) {
+			c += " match";
+		} else {
+			if (wboard._data.word.indexOf(l)>-1) {
+				c += " present"
+			}
+		}
+		console.log("------------------");
+		Vue.set(wrow.letters, wrow.letters.length, {
+			l: l
+			,
+			c: c
+		});
 	}
 }
 
