@@ -73,7 +73,38 @@ function nextrow(r) {
 function evaluateGuess() {
 	var wboard = WORDL.$children[0];
 	var wrow = wboard.$children[wboard._data.activeRow];
+
+
 	if (wrow._data.letters.length==wboard._data.wordlength) {
+
+		for (var l in wrow._data.letters) {
+
+			var letter = wrow._data.letters[l].l;
+			console.log(l, letter);
+
+			var c = "normal";
+			c = "letter";
+			if (letter==wboard._data.word[l]) {
+				c += " match";
+			} else {
+				if (wboard._data.word.indexOf(letter)>-1) {
+					c += " present"
+				}
+			}
+			Vue.set(wrow.letters, l, {
+				l: letter
+				,
+				c: c
+			});
+
+
+		}
+
+
+
+
+
+
 		nextrow(wboard._data.activeRow+1);
 	}
 
@@ -83,24 +114,10 @@ function handleKeyEntry(l) {
 	var wboard = WORDL.$children[0];
 	var wrow = wboard.$children[wboard._data.activeRow];
 	if (wrow.letters.length < wboard._data.wordlength) {
-		var c = "normal";
-		console.log("------------------");
-		console.log(l);
-		console.log(wrow._data.letters.length);
-		console.log(wboard._data.word);
-		c = "letter";
-		if (l==wboard._data.word[wrow._data.letters.length]) {
-			c += " match";
-		} else {
-			if (wboard._data.word.indexOf(l)>-1) {
-				c += " present"
-			}
-		}
-		console.log("------------------");
 		Vue.set(wrow.letters, wrow.letters.length, {
 			l: l
 			,
-			c: c
+			c: "letter"
 		});
 	}
 }
