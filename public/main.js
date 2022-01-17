@@ -146,12 +146,13 @@ function evaluateGuess() {
 		var lettersUsed = wboard.lettersUsed;
 		for (var l in wrow._data.letters) {
 			var letter = wrow._data.letters[l];
-			lettersUsed.push(letter.l);
 			var c = "letter";
 			if (letter.l==wboard.word[l]) {
 				c += " match";
 			} else if ( wboard.word.indexOf(letter.l)>-1 ) {
 				c += " present";
+			} else {
+				lettersUsed.push(letter.l);				
 			}
 			Vue.set(wrow.spaces, l, {
 				l: letter.l
