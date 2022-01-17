@@ -76,17 +76,6 @@ function evaluateGuess() {
 	var wrow = wboard.$children[wboard._data.activeRow];
 	if (wrow._data.letters.length==wboard._data.wordlength) {
 		for (var l in wrow._data.letters) {
-			var letter = wrow._data.letters[l].l;
-			console.log(l, letter);
-			var c = "normal";
-			c = "letter";
-			if (letter==wboard._data.word[l]) {
-				c += " match";
-			} else {
-				if (wboard._data.word.indexOf(letter)>-1) {
-					c += " present"
-				}
-			}
 			Vue.set(wrow.letters, l, {
 				l: letter
 				,
@@ -97,11 +86,15 @@ function evaluateGuess() {
 	}
 }
 
-function updateRowSpaces(row) {	
+function updateRowSpaces(row) {
 	// Create a copy, not a reference
 	var spaces = [].concat(row.letters);
 	for (var i=spaces.length;i<row.$parent.wordlength;i++) {
 		spaces.push({l:"?",c:"letter empty"});
+	}
+	console.clear();
+	for (var s in spaces) {
+		console.log("spaces["+s+"]", spaces[s]);
 	}
 	Vue.set(row, 'spaces', spaces);
 }
@@ -115,8 +108,8 @@ function handleKeyEntry(l) {
 			,
 			c: "letter"
 		});
-		updateRowSpaces(wrow);
 	}
+	updateRowSpaces(wrow);
 }
 
 function backspace() {
@@ -154,9 +147,6 @@ $(window).on("load", () => {
 		if (charOK(c))
 			handleKeyEntry(c);
 	});
-
-	$("#keypad").focus();
-	$("#keypad").trigger('touchstart');
 
 })
 

@@ -36,10 +36,14 @@ span.empty {
 #keypad {
 	border: none;
 
+	display: block;
+	opacity: .05;
 	position: fixed;
-	top: -100px;
-	width: 1px;
-	height: 1px;
+	border: 1px solid black;
+	top: 40px;
+	bottom: 0px;
+	width: 100%;
+	z-index: 1000;
 
 }
 
