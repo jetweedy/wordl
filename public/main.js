@@ -258,6 +258,9 @@ var startup = () => {
 		}
 	})
 
+	$(window).on("dblclick", function(e) {
+		e.preventDefault();
+	})
 
 }
 
