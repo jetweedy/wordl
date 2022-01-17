@@ -47,6 +47,10 @@ span.empty {
 	font-size: 1.2em;
 }
 
+#keyboard .used {
+	opacity: .3;
+}
+
 #keyboard .special {
 	width: 10%;
 	background-color: darkgray;

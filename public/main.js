@@ -32,6 +32,8 @@ var wordlBoard = Vue.component('wordl-board', {
 		return {
 			activeRow:0
 			,
+			lettersUsed:[]
+			,
 			chances: this.init_chances
 			,
 			wordlength: this.init_wordlength
@@ -105,34 +107,77 @@ function nextrow(r) {
 
 
 
+
+
+
+
+function drawKeyboard() {
+	$("#keyboard").html("");
+	var qwerty = "QWERTYUIOP ASDFGHJKL >ZXCVBNM<";
+	for (var a in qwerty) {
+		var l = qwerty[a];
+		if (l==" ") {
+			var btn = $("<br>");
+		} else if (l=="<") {
+			var btn = $("<button>").html("&larr;").addClass("key special");
+			btn.on("click", backspace);
+		} else if (l==">") {
+			var btn = $("<button>").html("Go").addClass("key special");			
+			btn.on("click", evaluateGuess);
+		}
+		else {
+			var btn = $("<button>").html(l).addClass("key");
+			btn.on("click", function() {
+				handleKeyEntry(this.l)
+			}.bind({l:l}));
+		}
+		var wi = WORDL.$children[0].lettersUsed.indexOf(l);
+		if (wi > -1)
+			btn.addClass("used");
+		$("#keyboard").append(btn);
+	}
+}
+
+
 function evaluateGuess() {
 	var wboard = WORDL.$children[0];
 	var wrow = wboard.$children[wboard._data.activeRow];
 	if (wrow._data.letters.length==wboard._data.wordlength) {
+		var lettersUsed = wboard.lettersUsed;
 		for (var l in wrow._data.letters) {
 			var letter = wrow._data.letters[l];
-
+			lettersUsed.push(letter.l);
 			var c = "letter";
 			if (letter.l==wboard.word[l]) {
 				c += " match";
 			} else if ( wboard.word.indexOf(letter.l)>-1 ) {
 				c += " present";
 			}
-
-			console.log(letter.l);
-			console.log(wboard.word);
-			console.log("class", c);
-
 			Vue.set(wrow.spaces, l, {
 				l: letter.l
 				,
 				c: c
 			});
-
 		}
+		Vue.set(wboard, 'lettersUsed', lettersUsed);
+		drawKeyboard();
 		nextrow(wboard._data.activeRow+1);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function updateRowSpaces(row) {
 	// Create a copy, not a reference
@@ -188,6 +233,8 @@ function handleKeyInput(e) {
 		}
 }
 
+
+
 var startup = () => {
 
     WORDL = new Vue({
@@ -231,26 +278,7 @@ var startup = () => {
 		}
 	});
 
-	var qwerty = "QWERTYUIOP ASDFGHJKL >ZXCVBNM<";
-	for (var a in qwerty) {
-		var l = qwerty[a];
-		if (l==" ") {
-			var btn = $("<br>");
-		} else if (l=="<") {
-			var btn = $("<button>").html("&larr;").addClass("key special");
-			btn.on("click", backspace);
-		} else if (l==">") {
-			var btn = $("<button>").html("Go").addClass("key special");			
-			btn.on("click", evaluateGuess);
-		}
-		else {
-			var btn = $("<button>").html(l).addClass("key");
-			btn.on("click", function() {
-				handleKeyEntry(this.l)
-			}.bind({l:l}));
-		}
-		$("#keyboard").append(btn);
-	}
+	drawKeyboard();
 
 	$("#btnSpecialChar").on("click", () => {
 		var v = $("#inputSpecialChar").val();
