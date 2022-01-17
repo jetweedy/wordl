@@ -34,11 +34,13 @@ span.empty {
 }
 
 #keypad {
-	width: 1px;
-	height: 1px;
 	border: none;
+	/*
 	position: fixed;
 	top: -100px;
+	width: 1px;
+	height: 1px;
+	*/
 }
 
 
