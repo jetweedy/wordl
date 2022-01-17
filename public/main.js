@@ -184,6 +184,16 @@ $(window).on("load", () => {
 
   initRow(WORDL.$children[0].$children[0]);
 
+//// #jetweedy
+//// Make mobile react to keypresses too...
+//// How??
+//  $("#keypad").on("change", function(e) {
+//  	console.log("test");
+//  	var s = $("#keypad").val();
+//  	$("#debug").html("test");
+//  });
+
+
 	$(window).on("keyup", (e) => {
 		var c = String.fromCharCode(e.keyCode).toUpperCase();
 		if (e.keyCode==8)
