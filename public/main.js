@@ -57,11 +57,13 @@ var wordlBoard = Vue.component('wordl-board', {
 
 var WORDL;
 
+function isLetter(str) {
+  return str.length === 1 && str.match(/[a-z]/i);
+}
+
 function charOK(c) {
 	var ok = true;
-	if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(c) < 0) {
-		ok = false;
-	}
+//	if (!isLetter(c)) { ok = false; }
 	return ok;
 }
 
@@ -142,6 +144,7 @@ function updateRowSpaces(row) {
 
 var gameover = false;
 function handleKeyEntry(l) {
+	l = l.toUpperCase();
 	if (!gameover) {
 		var wboard = WORDL.$children[0];
 		var wrow = wboard.$children[wboard.activeRow];
@@ -167,14 +170,21 @@ function backspace() {
 }
 
 
-function handleKeyInput(e) {
-		var c = String.fromCharCode(e.keyCode).toUpperCase();
-		if (e.keyCode==8)
-			backspace();
-		if (e.keyCode==13)
-			evaluateGuess();
+function handleSpecialChar(c) {
 		if (charOK(c))
 			handleKeyEntry(c);	
+}
+function handleKeyInput(e) {
+		var c = String.fromCharCode(e.keyCode).toUpperCase();
+		if (e.keyCode==8) {
+			backspace();
+		} else
+		if (e.keyCode==13) {
+			evaluateGuess();
+		} else
+		if (charOK(c)) {
+			handleKeyEntry(c);	
+		}
 }
 
 var startup = () => {
@@ -205,17 +215,49 @@ var startup = () => {
 //  });
 
 
+/*
 	$("#keypad").on("keypress", function(e) {
 //		for (var i=0;i<10;i++)
-//			handleKeyEntry(8);
+//			handleKeyInput(8);
 		$("#keypad").val(e.keyCode);
 	});
 	$("#keypad").focus();
+*/
 
 	$(window).on("keyup", (e) => {
-		if (!$("#keypad").is(":focus"))
-			handleKeyEntry(e);
+		if (!$("#keypad").is(":focus")) {
+				handleKeyInput(e);			
+		}
 	});
+
+	var qwerty = "QWERTYUIOP ASDFGHJKL >ZXCVBNM<";
+	for (var a in qwerty) {
+		var l = qwerty[a];
+		if (l==" ") {
+			var btn = $("<br>");
+		} else if (l=="<") {
+			var btn = $("<button>").html("&larr;").addClass("key special");
+			btn.on("click", backspace);
+		} else if (l==">") {
+			var btn = $("<button>").html("Go").addClass("key special");			
+			btn.on("click", evaluateGuess);
+		}
+		else {
+			var btn = $("<button>").html(l).addClass("key");
+			btn.on("click", function() {
+				handleKeyEntry(this.l)
+			}.bind({l:l}));
+		}
+		$("#keyboard").append(btn);
+	}
+
+	$("#btnSpecialChar").on("click", () => {
+		var v = $("#inputSpecialChar").val();
+		if (v.length==1) {
+			handleKeyEntry(v);
+		}
+	})
+
 
 }
 
