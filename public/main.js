@@ -207,8 +207,8 @@ var startup = () => {
 
 	$("#keypad").on("keyup input", function(e) {
 		$("#keypad").css({"background-color":"yellow"});
-		handleKeyInput(e);
-//		$("#keypad").val("");
+//		handleKeyInput(e);
+		$("#keypad").val(e.keyCode);
 	});
 	$("#keypad").focus();
 
