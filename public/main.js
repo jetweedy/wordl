@@ -3,11 +3,13 @@
 var wordlRow = Vue.component('wordl-row', {
   data: function () {
     return {
+    	spaces:[]
+    	,
     	letters:[]
     }
   }
   ,
-  template: "<div class='wordl_row'><span v-for='letter in letters' :class='letter.c'>{{letter.l}}</span></div>"
+  template: "<div class='wordl_row'><span v-for='letter in spaces' :class='letter.c'>{{letter.l}}</span></div>"
 })
 
 var wordlBoard = Vue.component('wordl-board', {
@@ -17,7 +19,6 @@ var wordlBoard = Vue.component('wordl-board', {
 		for (var c=0;c<this.init_chances;c++) {
 			ris.push(c);
 		}
-		console.log("ris", ris);
 		return {
 			activeRow:0
 			,
@@ -31,7 +32,7 @@ var wordlBoard = Vue.component('wordl-board', {
 		}
 	}
 		,
-		template: "<div class='wordl-board'><wordl-row v-for='row in rows' class='wordl-board' :key='row.i'></wordl-row></div>"
+		template: "<div><wordl-row v-for='row in rows' :key='row.i'></wordl-row></div>"
 })
 
 
@@ -73,15 +74,10 @@ function nextrow(r) {
 function evaluateGuess() {
 	var wboard = WORDL.$children[0];
 	var wrow = wboard.$children[wboard._data.activeRow];
-
-
 	if (wrow._data.letters.length==wboard._data.wordlength) {
-
 		for (var l in wrow._data.letters) {
-
 			var letter = wrow._data.letters[l].l;
 			console.log(l, letter);
-
 			var c = "normal";
 			c = "letter";
 			if (letter==wboard._data.word[l]) {
@@ -96,29 +92,30 @@ function evaluateGuess() {
 				,
 				c: c
 			});
-
-
 		}
-
-
-
-
-
-
 		nextrow(wboard._data.activeRow+1);
 	}
+}
 
+function updateRowSpaces(row) {	
+	// Create a copy, not a reference
+	var spaces = [].concat(row.letters);
+	for (var i=spaces.length;i<row.$parent.wordlength;i++) {
+		spaces.push({l:"?",c:"letter empty"});
+	}
+	Vue.set(row, 'spaces', spaces);
 }
 
 function handleKeyEntry(l) {
 	var wboard = WORDL.$children[0];
-	var wrow = wboard.$children[wboard._data.activeRow];
-	if (wrow.letters.length < wboard._data.wordlength) {
+	var wrow = wboard.$children[wboard.activeRow];
+	if (wrow.letters.length < wboard.wordlength) {
 		Vue.set(wrow.letters, wrow.letters.length, {
 			l: l
 			,
 			c: "letter"
 		});
+		updateRowSpaces(wrow);
 	}
 }
 
@@ -129,6 +126,7 @@ function backspace() {
 	if (letters.length > 0)
 		letters.pop();
 	Vue.set(wrow, 'letters', letters);
+	updateRowSpaces(wrow);
 }
 
 
@@ -156,6 +154,8 @@ $(window).on("load", () => {
 		if (charOK(c))
 			handleKeyEntry(c);
 	});
+
+	$("#keypad").focus();
 
 })
 

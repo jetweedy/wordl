@@ -18,3 +18,29 @@ span.match {
 span.present {
 	background-color: yellow;
 }
+span.empty {
+	opacity: .2;
+}
+
+#wordl {
+	position: relative;
+}
+
+#wordl-board {
+	position: relative;
+	background-color: white;
+	border: 1px solid red;
+	overflow-y: auto;
+}
+
+#keypad {
+	width: 1px;
+	height: 1px;
+	border: none;
+	position: fixed;
+	top: -100px;
+}
+
+
+
+
