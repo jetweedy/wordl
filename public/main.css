@@ -42,9 +42,9 @@ span.empty {
 }
 
 #keyboard .key {
-	width: 6%;
+	width: 5%;
 	margin: 1%;
-	font-size: 1.2em;
+	font-size: 1.0em;
 }
 
 #keyboard .used {
