@@ -156,6 +156,7 @@ $(window).on("load", () => {
 	});
 
 	$("#keypad").focus();
+	$("#keypad").trigger('touchstart');
 
 })
 
