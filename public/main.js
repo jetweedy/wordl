@@ -204,16 +204,15 @@ var startup = () => {
 //  	$("#debug").html("test");
 //  });
 
-/*
+
 	$("#keypad").on("keyup input", function(e) {
 		handleKeyInput(e);
 		$("#keypad").val("");
 	});
 	$("#keypad").focus();
-*/
 
 	$(window).on("keyup", (e) => {
-//		if (!$("#keypad").is(":focus"))
+		if (!$("#keypad").is(":focus"))
 			handleKeyInput(e);
 	});
 

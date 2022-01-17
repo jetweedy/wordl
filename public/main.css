@@ -44,9 +44,10 @@ span.empty {
 	width: 100%;
 	text-align: center;
 	position: relative;
-	top: -180;
-	cursor: none;
+/*
+	top: -180;	
 	color: transparent;
+*/
 /*
 	display: block;
 	opacity: .5;
