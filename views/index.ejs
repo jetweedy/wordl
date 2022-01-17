@@ -9,15 +9,17 @@
 	<link rel="stylesheet" type="text/css" href="./public/main.css" />
     <body>
     	<!--
-    	<input type="text" id="keypad" value="test" />
-	    -->
     	<div id="debug"></div>
+	    -->
     	<h2>Wordl</h2>
     	<p>
-    		Start typing your 5-letter word guesses below. You'll get 6 chances!
+    		Start typing your 5-letter word guesses below.
+    		<br >You'll get 6 chances!
     	</p>
     	<div id="wordl">
 	    	<wordl-board id="wordl-board" init_word="<%=word%>" init_wordlength=5 init_chances=6></wordl-board>
     	</div>
+    	<input type="text" id="keypad" value="" placeholder="" />
+    	<div id="keyboard"></div>
 	</body>
 </html>

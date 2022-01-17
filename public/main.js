@@ -167,8 +167,17 @@ function backspace() {
 }
 
 
+function handleKeyInput(e) {
+		var c = String.fromCharCode(e.keyCode).toUpperCase();
+		if (e.keyCode==8)
+			backspace();
+		if (e.keyCode==13)
+			evaluateGuess();
+		if (charOK(c))
+			handleKeyEntry(c);	
+}
 
-$(window).on("load", () => {
+var startup = () => {
 
     WORDL = new Vue({
 			el: '#wordl',
@@ -184,6 +193,8 @@ $(window).on("load", () => {
 
   initRow(WORDL.$children[0].$children[0]);
 
+//  var qwerty = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
 //// #jetweedy
 //// Make mobile react to keypresses too...
 //// How??
@@ -193,16 +204,20 @@ $(window).on("load", () => {
 //  	$("#debug").html("test");
 //  });
 
+	$("#keypad").on("keyup input", function(e) {
+		handleKeyInput(e);
+		$("#keypad").val("");
+	});
+	$("#keypad").focus();
 
 	$(window).on("keyup", (e) => {
-		var c = String.fromCharCode(e.keyCode).toUpperCase();
-		if (e.keyCode==8)
-			backspace();
-		if (e.keyCode==13)
-			evaluateGuess();
-		if (charOK(c))
-			handleKeyEntry(c);
+		if (!$("#keypad").is(":focus"))
+			handleKeyInput(e);
 	});
 
+}
+
+$(window).on("load", () => {
+	setTimeout(startup, 200);	
 })
 

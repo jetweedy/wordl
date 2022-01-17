@@ -5,6 +5,7 @@ npm init -y
 npm install dotenv
 npm install express
 npm install ejs
+npm install mysql
 */
 
 require('dotenv').config()
@@ -13,6 +14,8 @@ const path = require('path');
 const express = require('express');
 const PORT = process.env.PORT || 3000;
 const fs = require('fs');
+//// Require the db tools
+const db = require('./db/db');
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -36,6 +39,12 @@ const server = express()
 			}
 		}
 		res.json({l:words.length, words:words});
+	})
+	.get('/db-setup', function(req, res) {
+		var q = "CREATE TABLE IF NOT EXISTS words (id int not null auto_increment primary key, word varchar(10));";
+		db.query(q, (e,r) => {
+			res.json(q);
+		});
 	})
 	.get('/', function(req, res){
 		var listtext = fs.readFileSync("words.txt", 'utf8');

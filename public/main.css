@@ -1,6 +1,10 @@
 body {
 	font-family: arial;
-	font-size: .9em;
+	font-size: 2.6em;
+}
+
+.wordl_row {
+	text-align: center;
 }
 
 span.letter {
@@ -29,13 +33,21 @@ span.empty {
 #wordl-board {
 	position: relative;
 	background-color: white;
-	border: 1px solid red;
 	overflow-y: auto;
 }
 
-#keypad {
-	border: 5px solid red;
 
+#keypad {
+	font-size: 3em;
+	border: 1px solid black;
+	opacity: .2;
+	width: 100%;
+	text-align: center;
+	position: relative;
+	top: -180;
+	cursor: none;
+	color: transparent;
+/*
 	display: block;
 	opacity: .5;
 	position: fixed;
@@ -44,9 +56,9 @@ span.empty {
 	bottom: 0px;
 	width: 100%;
 	z-index: 1000;
+*/
 
 }
-
 
 #debug {
 	height: 100px;
