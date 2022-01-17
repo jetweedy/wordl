@@ -1,9 +1,19 @@
 
+function initRow(row) {
+	var spaces = [];
+	for (var c=0;c<row.$parent.wordlength;c++) {
+		spaces.push({c:"letter",l:"?"});
+	}
+	Vue.set(row, 'spaces', spaces);
+}
+
+
 
 var wordlRow = Vue.component('wordl-row', {
   data: function () {
+  	var spaces = [];
     return {
-    	spaces:[]
+    	spaces:spaces
     	,
     	letters:[]
     }
@@ -55,7 +65,8 @@ function charOK(c) {
 	return ok;
 }
 
-function gameover() {
+function endgame() {
+	gameover = true;
 	evaluateGuess = () => {
 		console.log("Game over. Can't keep playing.");
 	}
@@ -65,22 +76,56 @@ function nextrow(r) {
 	var wboard = WORDL.$children[0];
 	var wrow = wboard.$children[wboard._data.activeRow];
 	if (r >= wboard._data.chances) {
-		gameover();
+		endgame();
 	} else {
 		Vue.set(wboard, 'activeRow', r);
+		initRow(wboard.$children[r]);
 	}
 }
+
+
+/*
+
+	for (var s in spaces) {
+		spaces[s].c = "letter";
+		if (spaces[s].l==row.$parent.word[s]) {
+			spaces[s].c += " match";
+		} else if ( row.$parent.word.indexOf(spaces[s].l)>-1 ) {
+			spaces[s].c += " present";
+		}
+	}
+
+
+*/
+
+
+
+
 
 function evaluateGuess() {
 	var wboard = WORDL.$children[0];
 	var wrow = wboard.$children[wboard._data.activeRow];
 	if (wrow._data.letters.length==wboard._data.wordlength) {
 		for (var l in wrow._data.letters) {
-			Vue.set(wrow.letters, l, {
-				l: letter
+			var letter = wrow._data.letters[l];
+
+			var c = "letter";
+			if (letter.l==wboard.word[l]) {
+				c += " match";
+			} else if ( wboard.word.indexOf(letter.l)>-1 ) {
+				c += " present";
+			}
+
+			console.log(letter.l);
+			console.log(wboard.word);
+			console.log("class", c);
+
+			Vue.set(wrow.spaces, l, {
+				l: letter.l
 				,
 				c: c
 			});
+
 		}
 		nextrow(wboard._data.activeRow+1);
 	}
@@ -92,28 +137,23 @@ function updateRowSpaces(row) {
 	for (var i=spaces.length;i<row.$parent.wordlength;i++) {
 		spaces.push({l:"?",c:"letter empty"});
 	}
-	for (var s in spaces) {
-		spaces[s].c = "letter";
-		if (spaces[s].l==row.$parent.word[s]) {
-			spaces[s].c += " match";
-		} else if ( row.$parent.word.indexOf(spaces[s].l)>-1 ) {
-			spaces[s].c += " present";
-		}
-	}
 	Vue.set(row, 'spaces', spaces);
 }
 
+var gameover = false;
 function handleKeyEntry(l) {
-	var wboard = WORDL.$children[0];
-	var wrow = wboard.$children[wboard.activeRow];
-	if (wrow.letters.length < wboard.wordlength) {
-		Vue.set(wrow.letters, wrow.letters.length, {
-			l: l
-			,
-			c: "letter"
-		});
+	if (!gameover) {
+		var wboard = WORDL.$children[0];
+		var wrow = wboard.$children[wboard.activeRow];
+		if (wrow.letters.length < wboard.wordlength) {
+			Vue.set(wrow.letters, wrow.letters.length, {
+				l: l
+				,
+				c: "letter"
+			});
+		}
+		updateRowSpaces(wrow);		
 	}
-	updateRowSpaces(wrow);
 }
 
 function backspace() {
@@ -131,16 +171,18 @@ function backspace() {
 $(window).on("load", () => {
 
     WORDL = new Vue({
-		el: '#wordl',
-		data: {
-		}
-		,
-		components: {
-			wordlRow: wordlRow
+			el: '#wordl',
+			data: {
+			}
 			,
-			wordlBoard: wordlBoard
-		}
+			components: {
+				wordlRow: wordlRow
+				,
+				wordlBoard: wordlBoard
+			}
     });
+
+  initRow(WORDL.$children[0].$children[0]);
 
 	$(window).on("keyup", (e) => {
 		var c = String.fromCharCode(e.keyCode).toUpperCase();
