@@ -92,9 +92,13 @@ function updateRowSpaces(row) {
 	for (var i=spaces.length;i<row.$parent.wordlength;i++) {
 		spaces.push({l:"?",c:"letter empty"});
 	}
-	console.clear();
 	for (var s in spaces) {
-		console.log("spaces["+s+"]", spaces[s]);
+		spaces[s].c = "letter";
+		if (spaces[s].l==row.$parent.word[s]) {
+			spaces[s].c += " match";
+		} else if ( row.$parent.word.indexOf(spaces[s].l)>-1 ) {
+			spaces[s].c += " present";
+		}
 	}
 	Vue.set(row, 'spaces', spaces);
 }
