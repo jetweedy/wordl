@@ -69,6 +69,7 @@ function charOK(c) {
 
 function endgame() {
 	gameover = true;
+	$("#solution").html("Solution: " + WORDL.$children[0].word.join(""));
 	evaluateGuess = () => {
 		console.log("Game over. Can't keep playing.");
 	}

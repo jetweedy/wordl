@@ -55,11 +55,16 @@ span.empty {
 #specialchar {
 	padding: 1em;
 	border-top: 1px solid black;
+	border-bottom: 1px solid black;
 	text-align: center;
 }
 #inputSpecialChar, #btnSpecialChar {
 	width: 100px;
 	font-size: 1em;	
+}
+
+#solution {
+	text-align: center;
 }
 
 #debug {
