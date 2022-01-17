@@ -226,8 +226,8 @@ var startup = () => {
 */
 
 	$(window).on("keyup", (e) => {
-		if (!$("#keypad").is(":focus")) {
-				handleKeyInput(e);			
+		if (!$("#inputSpecialChar").is(":focus")) {
+				handleKeyInput(e);
 		}
 	});
 
