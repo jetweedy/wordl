@@ -205,16 +205,16 @@ var startup = () => {
 //  });
 
 
-	$("#keypad").on("keyup input", function(e) {
-		$("#keypad").css({"background-color":"yellow"});
-//		handleKeyInput(e);
+	$("#keypad").on("keypress", function(e) {
+//		for (var i=0;i<10;i++)
+//			handleKeyEntry(8);
 		$("#keypad").val(e.keyCode);
 	});
 	$("#keypad").focus();
 
 	$(window).on("keyup", (e) => {
 		if (!$("#keypad").is(":focus"))
-			handleKeyInput(e);
+			handleKeyEntry(e);
 	});
 
 }
