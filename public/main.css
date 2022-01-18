@@ -50,6 +50,10 @@ span.empty {
 	text-align: center;
 }
 
+#keyboard .found {
+	background-color: #dfd;
+}
+
 #keyboard .used {
 	opacity: .3;
 }
