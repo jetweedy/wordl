@@ -53,7 +53,7 @@ const server = express()
 		var word = list[rand];
 //		var word = "wordl";
 //		var word = "sheet";
-		var word = "shire";
+//		var word = "shire";
 		res.render('index', {word:word});
 	})
 	.listen(PORT, () => console.log("Listening on PORT " + PORT))
