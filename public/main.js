@@ -29,8 +29,19 @@ var wordlBoard = Vue.component('wordl-board', {
 		for (var c=0;c<this.init_chances;c++) {
 			ris.push(c);
 		}
+		var word = this.init_word.toUpperCase().split("");
+		var lettercounts = {};
+		for (var w in word) {
+			if (typeof lettercounts[word[w]] == "undefined") {
+				lettercounts[word[w]] = 0;
+			}
+			lettercounts[word[w]]++;
+		}
+		console.log("lettercounts", lettercounts);
 		return {
 			activeRow:0
+			,
+			lettercounts: lettercounts
 			,
 			lettersUsed:[]
 			,
@@ -38,7 +49,7 @@ var wordlBoard = Vue.component('wordl-board', {
 			,
 			wordlength: this.init_wordlength
 			,
-			word: this.init_word.toUpperCase().split("")
+			word: word
 			,
 			rows: ris
 		}
@@ -144,13 +155,29 @@ function evaluateGuess() {
 	var wrow = wboard.$children[wboard._data.activeRow];
 	if (wrow._data.letters.length==wboard._data.wordlength) {
 		var lettersUsed = wboard.lettersUsed;
+
+		var lcounts = {};
+
 		for (var l in wrow._data.letters) {
 			var letter = wrow._data.letters[l];
+
+			if (typeof lcounts[letter.l] == "undefined") {
+				lcounts[letter.l] = 0;
+			}
+			lcounts[letter.l]++;
+
+			console.log(letter.l
+				, wboard.lettercounts[letter.l] 
+				, lcounts[letter.l]
+			);
+
 			var c = "letter";
 			if (letter.l==wboard.word[l]) {
-				c += " match";
+				if (wboard.lettercounts[letter.l] >= lcounts[letter.l])
+					c += " match";
 			} else if ( wboard.word.indexOf(letter.l)>-1 ) {
-				c += " present";
+				if (wboard.lettercounts[letter.l] >= lcounts[letter.l])
+					c += " present";
 			} else {
 				lettersUsed.push(letter.l);				
 			}
@@ -160,6 +187,9 @@ function evaluateGuess() {
 				c: c
 			});
 		}
+
+		console.log("lcounts", lcounts);
+
 		Vue.set(wboard, 'lettersUsed', lettersUsed);
 		drawKeyboard();
 		nextrow(wboard._data.activeRow+1);

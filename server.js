@@ -50,8 +50,10 @@ const server = express()
 		var listtext = fs.readFileSync("words.txt", 'utf8');
 		var list = JSON.parse(listtext);
 		var rand = getRandomInt(list.length-1);
-		var word = list[rand];
+//		var word = list[rand];
 //		var word = "wordl";
+		var word = "sheet";
+//		var word = "shire";
 		res.render('index', {word:word});
 	})
 	.listen(PORT, () => console.log("Listening on PORT " + PORT))

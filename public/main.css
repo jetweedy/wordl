@@ -43,8 +43,9 @@ span.empty {
 }
 
 #keyboard .key {
-	width: 5%;
-	margin: 0%;
+	width: 6%;
+	height: 100px;
+	margin: 2px;
 	font-size: 1.0em;
 }
 
