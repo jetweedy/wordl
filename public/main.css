@@ -43,10 +43,10 @@ span.empty {
 }
 
 #keyboard .key {
-	width: 6%;
+	width: 5%;
 	height: 100px;
-	margin: 2px;
-	font-size: 1.0em;
+	margin: 3px;
+	font-size: 0.9em;
 }
 
 #keyboard .used {
