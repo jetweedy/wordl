@@ -12,9 +12,10 @@ https://wordl.herokuapp.com/
 
 ## Installation
 
-Fairly generic:
+Fairly generic installation. There's some code in there to leverage a MySQL database, but it doesn't actually query it for anything yet just to play the game. Instead it pulls the words from a JSON file.
+
  - Copy the repo and enter it
- - > npm install
- - > npm start
+ - # npm install
+ - # npm start
  - Look for it at localhost:3000
  
