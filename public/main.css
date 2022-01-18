@@ -47,6 +47,7 @@ span.empty {
 	height: 100px;
 	margin: 3px;
 	font-size: 0.9em;
+	text-align: center;
 }
 
 #keyboard .used {
